@@ -1,14 +1,14 @@
 import mongoose from "mongoose"
 import * as dotenv from "dotenv"
-import exposureData from "./exposure.js"
-import Exposure from "../models/Exposure.js"
+import Chemical from "../models/Chemical.js"
+import chemicalData from "./chemical.js"
 
 dotenv.config()
 
 mongoose.connect(process.env.DATABASE_URL)
 
-await Exposure.deleteMany({})
-await Exposure.insertMany(exposureData) // 넣을 seed data로 교체
+await Chemical.deleteMany({})
+await Chemical.insertMany(chemicalData) // 넣을 seed data로 교체
 
 mongoose.connection.close()
 

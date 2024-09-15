@@ -1,47 +1,47 @@
 import mongoose from "mongoose"
 
-const SoilSchema = new mongoose.Schema(
+const ChemicalSchema = new mongoose.Schema(
   {
-    name: {
+    constituent: {
       type: String,
     },
-    symbol: {
+    henryConstant: {
+      type: Number,
+    },
+    logKoclogKd: {
+      type: Number,
+    },
+    KocKd: {
       type: String,
     },
-    totalPorosity: {
+    Sfo: {
       type: Number,
     },
-    WaterFilledPorosity: {
+    RfDo: {
       type: Number,
     },
-    bulkDensity: {
+    RfDd: {
       type: Number,
     },
-    saturatedHydraulicConductivity: {
+    SFd: {
       type: Number,
     },
-    capillaryZoneWaterFilledPorosity: {
+    URF: {
       type: Number,
     },
-    capillaryZoneHeight: {
+    Rfc: {
       type: Number,
     },
-    a1: {
+    Dair: {
       type: Number,
     },
-    N: {
+    Dwat: {
       type: Number,
     },
-    M: {
+    BCF: {
       type: Number,
     },
-    qr: {
-      type: Number,
-    },
-    meanGrainDiameter: {
-      type: Number,
-    },
-    nwRange: {
+    IUR: {
       type: Number,
     },
   },
@@ -51,6 +51,6 @@ const SoilSchema = new mongoose.Schema(
 )
 
 // mongoose.mode(컬렉션 명, 스키마)
-const Soil = mongoose.model("Soil", SoilSchema)
+const Chemical = mongoose.model("Chemical", ChemicalSchema)
 
-export default Soil
+export default Chemical
