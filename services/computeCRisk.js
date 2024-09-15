@@ -6,10 +6,10 @@ dotenv.config()
 
 mongoose.connect(process.env.DATABASE_URL)
 
-const computeCRisk = async (scenario, source, pathway, receptor) => {
-  const Conc = source.concentration
-  const SF_o = source.chemicalOfConcern
-    ? await Chemical.find({ constituent: source.chemicalOfConcern }).SF_o
+const computeCRisk = (scenario, source, pathway, receptor) => {
+  const Conc = source.conc
+  const Sfo = source.chemicalOfConcern
+    ? Chemical.find({ constituent: source.chemicalOfConcern }).Sfo
     : 0
   const Br = pathway.Br
   const EF = receptor.EF
@@ -24,31 +24,31 @@ const computeCRisk = async (scenario, source, pathway, receptor) => {
 
   switch (scenario) {
     case 1:
-      if (!Conc || !SF_o || !EF || !ED || !IR || !RBAF || !BW || !AT) {
+      if (!Conc || !Sfo || !EF || !ED || !IR || !RBAF || !BW || !AT) {
         return null
       }
 
-      return ((Conc * SF_o * EF * ED * IR * RBAF * 10) ^ -6) / (BW * AT * 365)
+      return ((Conc * Sfo * EF * ED * IR * RBAF * 10) ^ -6) / (BW * AT * 365)
     case 2:
-      if (!Conc || !SF_o || !EF || !ED || !SA || !M || !RAF_d || !BW || !AT) {
+      if (!Conc || !Sfo || !EF || !ED || !SA || !M || !RAF_d || !BW || !AT) {
         return null
       }
 
       return (
-        ((Conc * SF_o * EF * ED * SA * M * RAF_d * 10) ^ -6) / (BW * AT * 365)
+        ((Conc * Sfo * EF * ED * SA * M * RAF_d * 10) ^ -6) / (BW * AT * 365)
       )
     case 4:
-      if (!Conc || !SF_o || !EF || !ED || !BW || !AT || !IR || !Br) {
+      if (!Conc || !Sfo || !EF || !ED || !BW || !AT || !IR || !Br) {
         return null
       }
 
-      return ((Conc * SF_o * EF * ED) / (BW * AT * 365)) * (IR * Br + IR * Br)
+      return ((Conc * Sfo * EF * ED) / (BW * AT * 365)) * (IR * Br + IR * Br)
     case 15:
-      if (!Conc || !SF_o || !EF || !ED || !IR || !BW || !AT) {
+      if (!Conc || !Sfo || !EF || !ED || !IR || !BW || !AT) {
         return null
       }
 
-      return (Conc * SF_o * EF * ED * IR) / (BW * AT * 365)
+      return (Conc * Sfo * EF * ED * IR) / (BW * AT * 365)
     default:
       break
   }
