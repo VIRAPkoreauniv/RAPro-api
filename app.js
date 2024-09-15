@@ -6,6 +6,7 @@ import Soil from "./models/Soil.js"
 import Chemical from "./models/Chemical.js"
 import Exposure from "./models/Exposure.js"
 import computeCRisk from "./services/computeCRisk.js"
+import computeNCRisk from "./services/computeNCRisk.js"
 
 dotenv.config()
 
@@ -52,4 +53,15 @@ app.post("/c-risk", (req, res) => {
   const C_Risk = computeCRisk(scenario, source, pathway, receptor)
 
   res.send({ C_Risk })
+})
+
+app.post("/nc-risk", (req, res) => {
+  const scenario = req.body.scenario
+  const source = req.body.source
+  const pathway = req.body.pathway
+  const receptor = req.body.receptor
+
+  const NC_Risk = computeNCRisk(scenario, source, pathway, receptor)
+
+  res.send({ NC_Risk })
 })
