@@ -1,12 +1,12 @@
 import express from "express"
 import cors from "cors"
 import * as dotenv from "dotenv"
-import { SOIL_DATABASE } from "./data/mock.js"
+import mongoose from "mongoose"
+import Soil from "./models/Soil.js"
 
 dotenv.config()
 
 const app = express()
-
 const corsOptions = {
   origin: ["http://localhost:5173"],
 }
@@ -14,17 +14,15 @@ const corsOptions = {
 app.use(cors(corsOptions))
 app.use(express.json())
 
-// request handler
-app.get("/hello", (req, res) => {
-  res.send(SOIL_DATABASE["Clay"])
-})
+mongoose
+  .connect(process.env.DATABASE_URL)
+  .then(() => console.log("Connected to DB"))
 
-app.get("/soil-data", (req, res) => {
+app.get("/soil-data", async (req, res) => {
   const name = req.query.name
+  const soilData = await Soil.find({ name: name })
 
-  res.send(SOIL_DATABASE[name])
+  res.send(soilData)
 })
 
 app.listen(process.env.PORT || 3000, () => console.log("Server Started"))
-
-// 실행 : npm run dev
