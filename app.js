@@ -27,21 +27,33 @@ app.get("/soil-data", async (req, res) => {
   const name = req.query.name
   const soilData = await Soil.find({ name: name })
 
-  res.send(soilData)
+  if (soilData.length > 0) {
+    res.status(200).send(soilData)
+  } else {
+    res.status(404).send({ message: "Cannot find soil data." })
+  }
 })
 
 app.get("/chemical-data", async (req, res) => {
   const constituent = req.query.constituent
   const chemicalData = await Chemical.find({ constituent: constituent })
 
-  res.send(chemicalData)
+  if (chemicalData.length > 0) {
+    res.status(200).send(chemicalData)
+  } else {
+    res.status(404).send({ message: "Cannot find chemical data." })
+  }
 })
 
 app.get("/exposure-data", async (req, res) => {
   const name = req.query.name
   const exposureData = await Exposure.find({ name: name })
 
-  res.send(exposureData)
+  if (exposureData.length > 0) {
+    res.status(200).send(exposureData)
+  } else {
+    res.status(404).send({ message: "Cannot find exposure data." })
+  }
 })
 
 app.post("/c-risk", (req, res) => {
@@ -52,7 +64,7 @@ app.post("/c-risk", (req, res) => {
 
   const C_Risk = computeCRisk(scenario, source, pathway, receptor)
 
-  res.send({ C_Risk })
+  res.status(200).send({ C_Risk })
 })
 
 app.post("/nc-risk", (req, res) => {
@@ -63,5 +75,5 @@ app.post("/nc-risk", (req, res) => {
 
   const NC_Risk = computeNCRisk(scenario, source, pathway, receptor)
 
-  res.send({ NC_Risk })
+  res.status(200).send({ NC_Risk })
 })
