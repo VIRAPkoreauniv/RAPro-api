@@ -18,7 +18,7 @@
   "scripts": {
     "compile": "tsc && node dist/app.js",
     "dev": "nodemon -e ts --exec \"npm run compile\"",
-    "start": "node app.ts",
+    "start": "node dist/app.js",
     "seed": "node src/data/seed.js"
   }
 }
