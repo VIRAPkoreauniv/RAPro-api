@@ -7,12 +7,13 @@ import Chemical from "./models/Chemical.js"
 import Exposure from "./models/Exposure.js"
 import computeCRisk from "./services/computeCRisk.js"
 import computeNCRisk from "./services/computeNCRisk.js"
+import asyncHandler from "./utils/asyncHandler.js"
 
 dotenv.config()
 
 const app = express()
 const corsOptions = {
-  origin: ["http://localhost:5173"],
+  origin: [process.env.DEV_URL, process.env.PRODUCTION_URL],
 }
 
 app.use(cors(corsOptions))
@@ -22,16 +23,6 @@ app.listen(process.env.PORT || 3000, () => console.log("Server Started"))
 mongoose
   .connect(process.env.DATABASE_URL)
   .then(() => console.log("Connected to DB"))
-
-const asyncHandler = (handler) => {
-  return async function (req, res) {
-    try {
-      await handler(req, res)
-    } catch (error) {
-      console.log(`${error.name} : ${error.message}`)
-    }
-  }
-}
 
 app.get(
   "/soil-data",
