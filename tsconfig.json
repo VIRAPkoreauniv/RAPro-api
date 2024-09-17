@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES2020", // ES2020 이상의 버전 설정
+    "module": "ESNext", // ESNext 모듈 시스템을 사용
+    "moduleResolution": "Node", // Node 방식으로 모듈을 해석
+    "outDir": "./dist", // 컴파일된 파일의 출력 디렉토리
+    "rootDir": "./src", // 소스 파일의 루트 디렉토리
+    "esModuleInterop": true, // ES6 모듈 호환성
+    "forceConsistentCasingInFileNames": true, // 대소문자 파일 이름 확인
+    "resolveJsonModule": true, // JSON 모듈 해석
+    "skipLibCheck": true,
+    "strict": true
+  },
+  "include": ["src/**/*.ts"], // 포함할 파일 경로
+  "exclude": ["node_modules"] // 제외할 폴더
+}

@@ -6,12 +6,19 @@
     "mongoose": "^8.6.2"
   },
   "devDependencies": {
-    "nodemon": "^3.1.4"
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.5.5",
+    "nodemon": "^3.1.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.2"
   },
   "type": "module",
+  "main": "src/app.ts",
   "scripts": {
-    "dev": "nodemon src/app.js",
-    "start": "node src/app.js",
+    "compile": "tsc && node dist/app.js",
+    "dev": "nodemon -e ts --exec \"npm run compile\"",
+    "start": "node src/app.ts",
     "seed": "node src/data/seed.js"
   }
 }

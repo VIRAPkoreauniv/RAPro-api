@@ -5,14 +5,13 @@ import mongoose from "mongoose"
 import Soil from "./models/Soil.js"
 import Chemical from "./models/Chemical.js"
 import Exposure from "./models/Exposure.js"
-import computeCRisk from "./services/computeCRisk.js"
-import computeNCRisk from "./services/computeNCRisk.js"
 import asyncHandler from "./utils/asyncHandler.js"
+import computeNCRisk from "./services/computeNCRisk.js"
 
 dotenv.config()
 
 const app = express()
-const corsOptions = {
+const corsOptions: Record<string, (string | undefined)[]> = {
   origin: [process.env.DEV_URL, process.env.PRODUCTION_URL],
 }
 
@@ -20,10 +19,12 @@ app.use(cors(corsOptions))
 app.use(express.json())
 app.listen(process.env.PORT || 3000, () => console.log("Server Started"))
 
-mongoose
-  .connect(process.env.DATABASE_URL)
-  .then(() => console.log("Connected to DB"))
-
+if (process.env.DATABASE_URL) {
+  mongoose
+    .connect(process.env.DATABASE_URL)
+    .then(() => console.log("Connected to DB"))
+    .catch(() => console.log("Failed to connect to DB"))
+}
 app.get(
   "/soil-data",
   asyncHandler(async (req, res) => {
@@ -68,13 +69,13 @@ app.get(
 
 app.post(
   "/c-risk",
-  asyncHandler((req, res) => {
+  asyncHandler(async (req, res) => {
     const scenario = req.body.scenario
     const source = req.body.source
     const pathway = req.body.pathway
     const receptor = req.body.receptor
 
-    const C_Risk = computeCRisk(scenario, source, pathway, receptor)
+    const C_Risk = await computeNCRisk(scenario, source, pathway, receptor)
 
     res.status(200).send({ C_Risk })
   })
@@ -82,13 +83,13 @@ app.post(
 
 app.post(
   "/nc-risk",
-  asyncHandler((req, res) => {
+  asyncHandler(async (req, res) => {
     const scenario = req.body.scenario
     const source = req.body.source
     const pathway = req.body.pathway
     const receptor = req.body.receptor
 
-    const NC_Risk = computeNCRisk(scenario, source, pathway, receptor)
+    const NC_Risk = await computeNCRisk(scenario, source, pathway, receptor)
 
     res.status(200).send({ NC_Risk })
   })

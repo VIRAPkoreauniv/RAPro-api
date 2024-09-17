@@ -1,14 +1,35 @@
 import mongoose from "mongoose"
 import * as dotenv from "dotenv"
 import Chemical from "../models/Chemical.js"
+import {
+  IPathway,
+  IReceptor,
+  ISource,
+  ScenarioType,
+} from "../types/s-p-r.type.js"
+import { IChemicalData } from "../types/chemical.type.js"
 
 dotenv.config()
 
-mongoose.connect(process.env.DATABASE_URL)
+if (process.env.DATABASE_URL) {
+  mongoose
+    .connect(process.env.DATABASE_URL)
+    .then(() => console.log("Connected to DB"))
+    .catch(() => console.log("Failed to connect to DB"))
+}
 
-const computeNCRisk = (scenario, source, pathway, receptor) => {
+const computeNCRisk = async (
+  scenario: ScenarioType,
+  source: ISource,
+  pathway: IPathway,
+  receptor: IReceptor
+) => {
+  const chemicalData: IChemicalData[] = await Chemical.find({
+    constituent: source.chemicalOfConcern,
+  })
+
   const Conc = source.conc
-  const Sfo = Chemical.find({ constituent: source.chemicalOfConcern }).Sfo
+  const Sfo = chemicalData[0].Sfo
   const Br = pathway.Br
   const EF = receptor.EF
   const ED = receptor.ED
@@ -18,8 +39,8 @@ const computeNCRisk = (scenario, source, pathway, receptor) => {
   const AT = receptor.AT
   const SA = receptor.SA
   const M = receptor.M
-  const RAF_d = Chemical.find({ constituent: source.chemicalOfConcern }).RfDd
-  const RfD_o = Chemical.find({ constituent: source.chemicalOfConcern }).RfDo
+  const RAF_d = chemicalData[0].RfDd
+  const RfD_o = chemicalData[0].RfDo
 
   switch (scenario) {
     case 1:

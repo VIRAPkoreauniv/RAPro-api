@@ -1,16 +1,30 @@
 import mongoose from "mongoose"
 import * as dotenv from "dotenv"
-import Chemical from "../models/Chemical.js"
+import Chemical from "../models/Chemical"
+import { IPathway, IReceptor, ISource, ScenarioType } from "../types/s-p-r.type"
+import { IChemicalData } from "../types/chemical.type"
 
 dotenv.config()
 
-mongoose.connect(process.env.DATABASE_URL)
+if (process.env.DATABASE_URL) {
+  mongoose
+    .connect(process.env.DATABASE_URL)
+    .then(() => console.log("Connected to DB"))
+    .catch(() => console.log("Failed to connect to DB"))
+}
 
-const computeCRisk = (scenario, source, pathway, receptor) => {
+const computeCRisk = async (
+  scenario: ScenarioType,
+  source: ISource,
+  pathway: IPathway,
+  receptor: IReceptor
+) => {
+  const chemicalData: IChemicalData[] = await Chemical.find({
+    constituent: source.chemicalOfConcern,
+  })
+
   const Conc = source.conc
-  const Sfo = source.chemicalOfConcern
-    ? Chemical.find({ constituent: source.chemicalOfConcern }).Sfo
-    : 0
+  const Sfo = chemicalData[0].Sfo
   const Br = pathway.Br
   const EF = receptor.EF
   const ED = receptor.ED

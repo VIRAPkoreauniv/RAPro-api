@@ -47,8 +47,7 @@ const ExposureSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  },
-  {}
+  }
 )
 
 const Exposure = mongoose.model("Exposure", ExposureSchema)
