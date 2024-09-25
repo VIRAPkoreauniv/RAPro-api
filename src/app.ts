@@ -94,3 +94,39 @@ app.post(
     res.status(200).send({ NC_Risk })
   })
 )
+
+app.get(
+  "/soil-list",
+  asyncHandler(async (req, res) => {
+    const soilData = await Soil.find({})
+    const soilNameList = soilData.map((data) => {
+      return data.name
+    })
+
+    res.status(200).send(soilNameList)
+  })
+)
+
+app.get(
+  "/chemical-list",
+  asyncHandler(async (req, res) => {
+    const chemicalData = await Chemical.find({})
+    const chemicalNameList = chemicalData.map((data) => {
+      return data.constituent
+    })
+
+    res.status(200).send(chemicalNameList)
+  })
+)
+
+app.get(
+  "/exposure-list",
+  asyncHandler(async (req, res) => {
+    const exposureData = await Exposure.find({})
+    const exposureNameList = exposureData.map((data) => {
+      return data.name
+    })
+
+    res.status(200).send(exposureNameList)
+  })
+)
