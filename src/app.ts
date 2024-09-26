@@ -1,5 +1,5 @@
 import express from "express"
-import cors from "cors"
+import cors, { CorsOptions } from "cors"
 import * as dotenv from "dotenv"
 import mongoose from "mongoose"
 import Soil from "./models/Soil.js"
@@ -11,19 +11,24 @@ import computeNCRisk from "./services/computeNCRisk.js"
 dotenv.config()
 
 const app = express()
-const corsOptions: Record<string, (string | undefined)[] | string> = {
-  // origin: [process.env.DEV_URL, process.env.PRODUCTION_URL],
-  origin: "https://rapro-8e28f.web.app",
-  methods: "GET,POST",
-}
 
-app.use(
-  cors({
-    origin: "https://rapro-8e28f.web.app",
-    methods: ["GET", "POST"], // 허용할 메서드
-    allowedHeaders: ["Content-Type", "Authorization"], // 허용할 헤더
-  })
-)
+const whitelist = ["http://localhost:5173", "https://rapro-8e28f.web.app"]
+
+const corsOptions: CorsOptions = {
+  origin: function (
+    origin: string | undefined,
+    callback: (err: Error | null, allow?: boolean) => void
+  ) {
+    if (whitelist.indexOf(origin || "") !== -1 || !origin) {
+      // 도메인이 화이트리스트에 있거나 origin이 undefined (서버 내부 요청)일 경우 허용
+      callback(null, true)
+    } else {
+      // 도메인이 화이트리스트에 없으면 CORS 에러 발생
+      callback(new Error("Not allowed by CORS"))
+    }
+  },
+}
+app.use(cors(corsOptions))
 app.use(express.json())
 app.listen(process.env.PORT || 3000, () => console.log("Server Started"))
 
@@ -33,6 +38,7 @@ if (process.env.DATABASE_URL) {
     .then(() => console.log("Connected to DB"))
     .catch(() => console.log("Failed to connect to DB"))
 }
+
 app.get(
   "/soil-data",
   asyncHandler(async (req, res) => {
