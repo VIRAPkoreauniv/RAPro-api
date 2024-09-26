@@ -18,7 +18,7 @@ const corsOptions = {
         }
         else {
             // 도메인이 화이트리스트에 없으면 CORS 에러 발생
-            callback(new Error("Not allowed by CORS"));
+            callback(null, false);
         }
     },
 };
