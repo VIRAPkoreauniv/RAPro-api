@@ -9,7 +9,11 @@ import asyncHandler from "./utils/asyncHandler.js";
 import computeNCRisk from "./services/computeNCRisk.js";
 dotenv.config();
 const app = express();
-const whitelist = ["http://localhost:5173", "https://rapro-8e28f.web.app"];
+const whitelist = [
+    "http://localhost:5173",
+    "https://rapro-8e28f.web.app",
+    "https://rapro-8e28f--pr38-develop-fvls8qwx.web.app",
+];
 const corsOptions = {
     origin: function (origin, callback) {
         if (whitelist.indexOf(origin || "") !== -1 || !origin) {
