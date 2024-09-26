@@ -19,7 +19,7 @@ const corsOptions: Record<string, (string | undefined)[] | string> = {
 
 app.use(cors())
 app.use(express.json())
-app.listen(process.env.PORT || 3000, () => console.log("Server Started"))
+app.listen(80, () => console.log("Server Started"))
 
 if (process.env.DATABASE_URL) {
   mongoose
