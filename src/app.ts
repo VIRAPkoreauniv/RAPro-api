@@ -17,9 +17,15 @@ const corsOptions: Record<string, (string | undefined)[] | string> = {
   methods: "GET,POST",
 }
 
-app.use(cors())
+app.use(
+  cors({
+    origin: "https://rapro-8e28f.web.app",
+    methods: ["GET", "POST"], // 허용할 메서드
+    allowedHeaders: ["Content-Type", "Authorization"], // 허용할 헤더
+  })
+)
 app.use(express.json())
-app.listen(80, () => console.log("Server Started"))
+app.listen(process.env.PORT || 3000, () => console.log("Server Started"))
 
 if (process.env.DATABASE_URL) {
   mongoose
