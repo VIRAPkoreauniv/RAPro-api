@@ -13,7 +13,7 @@ dotenv.config()
 const app = express()
 const corsOptions: Record<string, (string | undefined)[] | string> = {
   // origin: [process.env.DEV_URL, process.env.PRODUCTION_URL],
-  origin: "https://rapro-8e28f.web.app/",
+  origin: "https://rapro-8e28f.web.app",
   methods: "GET,POST",
 }
 
