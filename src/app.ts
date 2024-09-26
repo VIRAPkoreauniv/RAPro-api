@@ -17,7 +17,7 @@ const corsOptions: Record<string, (string | undefined)[] | string> = {
   methods: "GET,POST",
 }
 
-app.use(cors({ origin: "https://rapro-8e28f.web.app" }))
+app.use(cors())
 app.use(express.json())
 app.listen(process.env.PORT || 3000, () => console.log("Server Started"))
 
