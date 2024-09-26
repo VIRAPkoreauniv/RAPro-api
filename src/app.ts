@@ -11,8 +11,9 @@ import computeNCRisk from "./services/computeNCRisk.js"
 dotenv.config()
 
 const app = express()
-const corsOptions: Record<string, (string | undefined)[]> = {
+const corsOptions: Record<string, (string | undefined)[] | string> = {
   origin: [process.env.DEV_URL, process.env.PRODUCTION_URL],
+  methods: "GET,POST",
 }
 
 app.use(cors(corsOptions))
