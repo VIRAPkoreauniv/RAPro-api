@@ -9,8 +9,18 @@ import asyncHandler from "./utils/asyncHandler.js";
 import computeNCRisk from "./services/computeNCRisk.js";
 dotenv.config();
 const app = express();
+const whitelist = ["http://localhost:5173", "https://rapro-8e28f.web.app"];
 const corsOptions = {
-    origin: [process.env.DEV_URL, process.env.PRODUCTION_URL],
+    origin: function (origin, callback) {
+        if (whitelist.indexOf(origin || "") !== -1 || !origin) {
+            // 도메인이 화이트리스트에 있거나 origin이 undefined (서버 내부 요청)일 경우 허용
+            callback(null, true);
+        }
+        else {
+            // 도메인이 화이트리스트에 없으면 CORS 에러 발생
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
 };
 app.use(cors(corsOptions));
 app.use(express.json());
