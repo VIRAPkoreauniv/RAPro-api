@@ -6,6 +6,12 @@ export interface ISource {
 export interface IPathway {
   soilType?: string
   Br?: number
+  VF?: number
+  PEF?: number
+  LF?: number
+  DAF?: number
+  FI?: number
+  DF?: number
 }
 export interface IReceptor {
   exposureType?: string
@@ -18,4 +24,8 @@ export interface IReceptor {
   RAF_d?: number
   M?: number
   SA?: number
+  EV?: number
+  BCF?: number
+  Z?: number
+  ET?: number
 }
